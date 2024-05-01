@@ -161,7 +161,7 @@ function createCombinedWordCloud(names, elementId) {
     anychart.onDocumentReady(function () {
         var chart = anychart.tagCloud(names);
 
-        chart.title('Nomi');
+        // chart.title('Nomi');
         chart.angles([0])
         chart.colorRange(false);
 
@@ -209,18 +209,23 @@ function createScatterPlot(results) {
         title: "Pesi & Altezze",
         xaxis: {
             title: 'Peso (kg)',
-            range: [2, 4]
+            range: [2, 4],
+            fixedrange: true
         },
         yaxis: {
             title: 'Altezza (cm)',
-            range: [35, 70]
+            range: [35, 70],
+            fixedrange: true
         },
         hovermode: 'closest',
         margin: { l: 40, r: 40, t: 40, b: 40 }
     };
 
     var config = {
-        displayModeBar: false // This hides the toolbar
+        displayModeBar: false, // This hides the toolbar
+        // staticPlot: true,       // Prevents zoom and pan
+        // scrollZoom: false,
+        // dragMode: false
     };
 
     Plotly.newPlot('scatterPlot', [trace], layout, config);
@@ -230,40 +235,38 @@ function createScatterPlot(results) {
 function createHeatmap(data) {
     var container = document.getElementById('calendar-heatmap');
     container.innerHTML = ''; // Clear existing heatmap before creating a new one
+
+    var maxVal = Math.max(...Object.values(data)); // Assuming data is an object of date counts
+    var step = maxVal / 4; // Divide max value into 4 steps for the legend
+
     var cal = new CalHeatMap();
     cal.init({
         itemSelector: "#calendar-heatmap",
         domain: "month",
         subDomain: "day",
         data: data,
-        start: new Date(2024, 8, 1),
-        end: new Date(2024, 10, 30),
-        range: 3,
-        cellSize: 20,
+        start: new Date(2024, 8, 1), // Correctly set for September
+        end: new Date(2024, 10, 30), // Correctly set for end of November
+        range: 3, // This should cover September to November if aligned correctly
+        cellSize: 16,
         subDomainTextFormat: "%d",
-        legend: [1, 5, 10],
+        legend: [step, step * 2, step * 3, maxVal].map(Math.floor),
         displayLegend: true,
         tooltip: true,
         considerMissingDataAsZero: true,
         domainGutter: 10,
         domainDynamicDimension: false,
-        nextSelector: "#next-button",
-        previousSelector: "#prev-button",
-        // Custom color scale
-        scale: [1, 3, 5, 10],
         domainLabelFormat: "%B %Y",
         subDomainTitleFormat: {
             empty: "No data on {date}",
             filled: "There were {count} entries on {date}"
         },
         domainLabelOrientation: "horizontal",
-        // Define the range of colors from lower to higher values
-        range: 5, // The number of segments in your color scale
         legendColors: {
             min: "#efefef",
             max: "#08306b",
-            empty: "white", // Background color for empty cells
-            base: "grey" // Color used under the heatmap, visible when no data
+            empty: "white",
+            base: "grey"
         }
     });
 }
@@ -281,5 +284,66 @@ function prepareHeatmapData(results) {
     return dateCounts;
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    const container = document.querySelector('#calendar-heatmap');
+    container.addEventListener('mouseover', function(e) {
+        const tooltip = document.querySelector('.domain-tooltip');
+        if (tooltip) {
+            // Adjust the position based on the container’s boundaries
+            const containerRect = container.getBoundingClientRect();
+            const tooltipRect = tooltip.getBoundingClientRect();
+            if (tooltipRect.top < containerRect.top) {
+                tooltip.style.top = '0px'; // Adjust this value as necessary
+            }
+            if (tooltipRect.bottom > containerRect.bottom) {
+                tooltip.style.top = `-${tooltipRect.height}px`; // Push it up by its own height
+            }
+        }
+    });
+});
+
+
+// function createHeatmap(data) {
+//     console.log(data)
+//     var container = document.getElementById('calendar-heatmap');
+//     container.innerHTML = ''; // Clear existing heatmap before creating a new one
+//     const heatmap = new CalendarHeatmap();
+//     heatmap.init({
+//         id: 'calendar-heatmap', // the container ID
+//         data: data,
+//         coloring: '#ff4500', // Example coloring, change as needed
+//         labels: {
+//             days: false,
+//             months: true,
+//             custom: {
+//                 weekDayLabels: null,
+//                 monthLabels: 'MMM'
+//             }
+//         },
+//         startYear: 2024,
+//         startMonth: 9, // September
+//         endYear: 2024,
+//         endMonth: 11, // November
+//         width: 600,  // Adjust as per container size or make responsive
+//     });
+// }
+
+// function prepareHeatmapData(results) {
+//     var dateCounts = {};
+//     results.forEach(result => {
+//         // Ensure the date is valid before processing
+//         var date = new Date(result.date);
+//         //console.log(resultDate);
+//         //console.log(date);
+//         if (!isNaN(date.getTime())) { // Check if the date is valid
+//             var timestamp = date.toISOString().slice(0, 10); // YYYY-MM-DD format
+//             dateCounts[timestamp] = (dateCounts[timestamp] || 0) + 1;
+//             console.log('Valid date:', result.date);
+//         } else {
+//             // console.error('Invalid date:', result.date);
+//         }
+//     });
+//     return dateCounts;
+//}
 
 

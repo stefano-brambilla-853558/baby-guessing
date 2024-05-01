@@ -5,8 +5,17 @@ body, html {
     padding: 0;
     background-color: #f4f4f9;
     color: #333;
+    width: 100%;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    max-width: 100%;    /* Ensures no element exceeds the body width */
+    position: relative; /* Ensures positioning context starts from the viewport edge */
+
 }
 
+.element {
+    max-width: 100%; /* Prevents the element from extending beyond the viewport */
+    box-sizing: border-box; /* Includes padding and border in the element's width */
+}
 /* .container {
     max-width: 600px;
     margin: 20px auto;
@@ -16,9 +25,10 @@ body, html {
 } */
 
 .container {
-    width: 50%; /* Adjust the width as needed */
+    width: 40%; /* Adjust the width as needed */
     max-width: 1200px; /* Prevents the container from getting too wide on large screens */
-    margin: 20px auto;
+    margin: 0 auto; /* Centers the container within its parent */
+    margin-bottom: 20px; /* Adjust the value based on your design preference */
     padding: 20px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     background-color: #f9f9f9;
@@ -125,23 +135,50 @@ button:hover {
 }
 
 
+
 #calendar-heatmap .cal-heatmap-container {
     display: flex;
     justify-content: center; /* Center heatmap horizontally */
-    align-items: center; /* Center heatmap vertically if needed */
-    height: 100%; /* Optional: Set a fixed height if necessary */
+    align-items: bottom; /* Center heatmap vertically */
+    height: 60%; /* Makes sure the container's height is respected */
+    width: 100%;  /* Ensure the container takes full width */
+}
+
+.cal-heatmap-container {
+    width: 100%; /* Ensure it uses the full width available */
 }
 
 #calendar-heatmap {
-    width: 50%;
+    width: 100%;  /* Make it responsive based on the parent container */
+    /* max-width: 600px; Limit the max width to align with other containers */
+    margin: auto; /* Center align if the parent is flex or full width */
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    overflow: auto; /* Show scrollbars if the content overflows */
+}
+#calendar-heatmap {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: bottom; /* Center vertically */
     height: auto; /* Adjust based on your layout needs */
     padding: 20px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     background-color: #f9f9f9;
     border: 1px solid #ccc;
-    overflow: hidden; /* Ensures no overflow from the container */
+    overflow: auto; /* Allows for scrolling if content overflows */
+    width: 100%; /* Ensure it takes the full width of its parent */
 }
 
+.cal-heatmap-container .domain-tooltip {
+    position: fixed; /* Change or adjust positioning strategy */
+    top: auto; /* Adjust based on actual needs */
+    left: auto; /* Adjust to ensure tooltips don’t go out of the container */
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide overflow text */
+    text-overflow: ellipsis; /* Show ellipsis if text overflows */
+}
 
 @media (max-width: 600px) {
     .word-clouds {
