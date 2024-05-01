@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baby Guess</title>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-tag-cloud.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cal-heatmap/cal-heatmap.css" />
+    <script src="https://cdn.jsdelivr.net/npm/d3@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cal-heatmap/cal-heatmap.min.js"></script>
+
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Baby Guess</h1>
+        <h3>Prodotto da Ele & Ste</h3>
+        <form id="guessForm">
+            
+            <h5> Quando nascerà il pargolo? Sarà un bimbo o una femminuccia? Dicci la tua! </h5>
+            <br>
+            <label for="weight">Peso alla nascita (kg): <span id="weightValue">3 kg</span> </label> 
+            <input id="weight" type="range" name="weight" min="2" max="4" step="0.1" value="3">
+            <br>
+            <label for="height">Altezza alla nascita (cm): <span id="heightValue">50 cm</span> </label>
+            <input id="height" type="range" name="height" min="35" max="70" step="1" value="50">
+            <br>
+            <label for="date">Data di nascita: <span id="dateValue">2024-10-25</span> </label>
+            <input type="date" id="date" name="date" value="2024-10-25">
+
+            <label for="sex">Sesso: <span id="sexValue"></span></label>
+            <select id="sex" name="sex">
+                <option value="default"></option>
+                <option value="Maschio">Maschio</option>
+                <option value="Femmina">Femmina</option>
+            </select>
+
+            <label for="maleName">Nome (Maschio): <span id="maleNameValue"></span></label>
+            <select id="maleName" name="maleName">
+                <option value="default"></option>
+                <option value="Pippo">Pippo</option>
+                <option value="Pluto">Pluto</option>
+                <option value="piero">piero</option>
+                <option value="pino">pino</option>
+                <option value="paolo">paolo</option>
+                <option value="plauto">plauto</option>
+            </select>
+
+            <label for="femaleName">Nome (Femmina): <span id="femaleNameValue"></span></label>
+            <select id="femaleName" name="femaleName">
+                <option value="default"></option>
+                <option value="Paperina">Paperina</option>
+                <option value="Minnie">Minnie</option>
+            </select>
+
+            <label for="guesserName">Hai concluso! Per finire, dicci chi sei :D</label>
+            <input type="text" id="guesserName" name="guesserName" placeholder="Il tuo nome">
+
+            <button type="submit">Submit Guess</button>
+        </form>
+    </div>
+
+    <!-- Add this section below the form inside <div class="container"> -->
+    <div id="results">
+        <!-- <h2>Le vostre supposizioni</h2> -->
+        <table id="resultsTable">
+            <thead>
+                <tr>
+                    <!-- <th>Chi</th>
+                    <th>Peso (kg)</th>
+                    <th>Altezza (cm)</th>
+                    <th>Data di nascita</th>
+                    <th>Sesso</th>
+                    <th>Nome (Maschio)</th>
+                    <th>Nome (Femmina)</th> -->
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    
+    <div id="scatterPlot" class="plot-container container"></div>
+
+    <div class="word-clouds container">
+        <div id="combinedNameCloud" class="word-cloud">
+        </div>
+    </div>
+
+    <div id="calendar-heatmap" class ="container calendar-heatmap"></div>
+
+    
+
+    <script src="script.js"></script>
+</body>
+</html>
