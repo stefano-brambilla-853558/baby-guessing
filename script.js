@@ -231,7 +231,7 @@ function createHeatmap(data) {
     container.innerHTML = ''; // Clear existing heatmap before creating a new one
 
     var maxVal = Math.max(...Object.values(data)); // Assuming data is an object of date counts
-    var step = maxVal / 4; // Divide max value into 4 steps for the legend
+    var step = maxVal / 3; // Divide max value into 4 steps for the legend
 
     var cal = new CalHeatMap();
     cal.init({
@@ -243,9 +243,9 @@ function createHeatmap(data) {
         end: new Date(2024, 10, 30), // Correctly set for end of November
         range: 3, // This should cover September to November if aligned correctly
         // dynamicDimension: true,
-        cellSize: 18,
+        cellSize: 16,
         subDomainTextFormat: "%d",
-        legend: [step, step * 2, step * 3, maxVal].map(Math.floor),
+        legend: [step, step * 2, maxVal].map(Math.floor),
         displayLegend: true,
         tooltip: true,
         considerMissingDataAsZero: true,
