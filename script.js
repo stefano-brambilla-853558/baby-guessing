@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('femaleNameValue').textContent = this.value;
     };
 
-    // SUbmit
+    // Submit
     document.getElementById('guessForm').addEventListener('submit', function(event) {
         event.preventDefault();
         const data = {
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
             femaleName: document.getElementById('femaleName').value,
             guesserName: document.getElementById('guesserName').value
         };
-
+        // Send POST request to submit guess
         fetch('https://baby-guess.azurewebsites.net/api/guess', {
             method: 'POST',
             headers: {
@@ -67,17 +67,17 @@ function loadResults() {
     fetch('https://baby-guess.azurewebsites.net/api/guess')
     .then(response => response.json())
     .then(data => {
-        populateResultsTable(data);
+        renderCharts(data);
     })
     .catch(error => {
         console.error('Error fetching results:', error);
     });
 }
 
-// Load results when the page is loaded
+// Load results when the page is loaded first time
 document.addEventListener('DOMContentLoaded', loadResults);
 
-function populateResultsTable(results) {
+function renderCharts(results) {
     const maleNames = {};
     const femaleNames = {};
     const combinedNames = [];
@@ -88,6 +88,7 @@ function populateResultsTable(results) {
         if (result.guesserName && result.weight && result.height && 
             result.date && result.sex && 
             result.maleName && result.femaleName) {
+            // Create table row
             // const row = document.createElement('tr');
             // row.innerHTML = `
             //     <td>${result.guesserName}</td>
@@ -99,6 +100,7 @@ function populateResultsTable(results) {
             //     <td>${result.femaleName}</td>
             // `;
             // tableBody.appendChild(row);
+
             // Count names for the word cloud
             maleNames[result.maleName] = (maleNames[result.maleName] || 0) + 1;
             femaleNames[result.femaleName] = (femaleNames[result.femaleName] || 0) + 1;
@@ -118,14 +120,7 @@ function populateResultsTable(results) {
     createCombinedWordCloud(combinedNames, 'combinedNameCloud');
     createScatterPlot(results)
     createHeatmap(prepareHeatmapData(results));
-    // document.addEventListener('DOMContentLoaded', function() {
-    //     // Ensure this is not causing multiple executions
-    //     //var cal = new CalHeatMap();
-    //     createHeatmap(prepareHeatmapData(results));
-    // }, { once: true }); // The 'once' option auto-removes the listener after firing
 }
-
-
 
 function createWordCloud(names, elementId) {
     const data = Object.keys(names).map(name => {
@@ -153,7 +148,6 @@ function createWordCloud(names, elementId) {
     });
 }
 
-
 function createCombinedWordCloud(names, elementId) {
     const container = document.getElementById(elementId);
     container.innerHTML = '';
@@ -161,7 +155,7 @@ function createCombinedWordCloud(names, elementId) {
     anychart.onDocumentReady(function () {
         var chart = anychart.tagCloud(names);
 
-        // chart.title('Nomi');
+        chart.title('I nomi');
         chart.angles([0])
         chart.colorRange(false);
 
@@ -172,7 +166,7 @@ function createCombinedWordCloud(names, elementId) {
             categories: ['category']
         });
 
-        chart.colorScale(anychart.scales.ordinalColor().colors(['#76cfe3', '#e290da']));
+        chart.colorScale(anychart.scales.ordinalColor().colors(['#4a6ddc', '#e290da']));
 
 
         chart.textSpacing(5);
@@ -201,7 +195,7 @@ function createScatterPlot(results) {
         hoverinfo: 'text',
         marker: {
             size: 12,
-            color: sexes.map(sex => sex === 'Maschio' ? '#0000FF' : '#FFC0CB') // Blue for Maschio, Pink for Femmina
+            color: sexes.map(sex => sex === 'Maschio' ? '#4a6ddc' : '#e290da') // Blue for Maschio, Pink for Femmina
         }
     };
 
@@ -248,7 +242,8 @@ function createHeatmap(data) {
         start: new Date(2024, 8, 1), // Correctly set for September
         end: new Date(2024, 10, 30), // Correctly set for end of November
         range: 3, // This should cover September to November if aligned correctly
-        cellSize: 16,
+        // dynamicDimension: true,
+        cellSize: 18,
         subDomainTextFormat: "%d",
         legend: [step, step * 2, step * 3, maxVal].map(Math.floor),
         displayLegend: true,
@@ -259,16 +254,25 @@ function createHeatmap(data) {
         domainLabelFormat: "%B %Y",
         subDomainTitleFormat: {
             empty: "No data on {date}",
-            filled: "There were {count} entries on {date}"
+            filled: "{count} entries"
         },
         domainLabelOrientation: "horizontal",
         legendColors: {
             min: "#efefef",
-            max: "#08306b",
+            max: "#4a6ddc",
             empty: "white",
             base: "grey"
         }
-    });
+    },
+    // [[Legend, { width: 500 }],
+    // [Tooltip, {
+    //     text: function (date, value, dayjsDate) {
+    //       return (
+    //         (value ? value + '°C' : 'No data') + ' on ' + dayjsDate.format('LL')
+    //       );
+    //     },
+    //   }]]
+    );
 }
 
 

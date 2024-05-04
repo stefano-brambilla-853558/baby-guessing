@@ -10,61 +10,82 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cal-heatmap/cal-heatmap.css" />
     <script src="https://cdn.jsdelivr.net/npm/d3@3"></script>
     <script src="https://cdn.jsdelivr.net/npm/cal-heatmap/cal-heatmap.min.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/cal-heatmap/dist/plugins/Tooltip.min.js"></script>
+    <script src="https://unpkg.com/cal-heatmap/dist/plugins/Legend.min.js"></script>
 
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
+        <!-- Title and subtitle -->
         <h1>Baby Guess</h1>
         <h3>Prodotto da Ele & Ste</h3>
+        <!-- Form -->
         <form id="guessForm">
             
-            <h5> Quando nascerà il pargolo? Sarà un bimbo o una femminuccia? Dicci la tua! </h5>
+            <!-- Description of form -->
+            <h5> Quando nascerà il pargolo? Sarà un bimbo o una bimba? Dicci la tua! </h5>
             <br>
+
+            <!-- Input weight -->
             <label for="weight">Peso alla nascita (kg): <span id="weightValue">3 kg</span> </label> 
             <input id="weight" type="range" name="weight" min="2" max="4" step="0.1" value="3">
             <br>
+            <!-- Input height -->
             <label for="height">Altezza alla nascita (cm): <span id="heightValue">50 cm</span> </label>
             <input id="height" type="range" name="height" min="35" max="70" step="1" value="50">
             <br>
+            <!-- Input date -->
             <label for="date">Data di nascita: <span id="dateValue">2024-10-25</span> </label>
             <input type="date" id="date" name="date" value="2024-10-25">
-
+            <!-- Input sex -->
             <label for="sex">Sesso: <span id="sexValue"></span></label>
             <select id="sex" name="sex">
                 <option value="default"></option>
                 <option value="Maschio">Maschio</option>
                 <option value="Femmina">Femmina</option>
             </select>
-
+            <!-- Input male names -->
             <label for="maleName">Nome (Maschio): <span id="maleNameValue"></span></label>
             <select id="maleName" name="maleName">
-                <option value="default"></option>
-                <option value="Pippo">Pippo</option>
-                <option value="Pluto">Pluto</option>
-                <option value="piero">piero</option>
-                <option value="pino">pino</option>
-                <option value="paolo">paolo</option>
-                <option value="plauto">plauto</option>
+                <option value="Leonardo">Leonardo</option>
+                <option value="Giacomo">Giacomo</option>
+                <option value="Nicolò">Nicolò</option>
+                <option value="Filippo">Filippo</option>
+                <option value="Daniele">Daniele</option>
+                <option value="Alessandro">Alessandro</option>
+                <option value="Gabriele">Gabriele</option>
+                <option value="Federico">Federico</option>
+                <option value="Massimo">Massimo</option>
+                <option value="Samuele">Samuele</option>
             </select>
-
+            <!-- Input female names -->
             <label for="femaleName">Nome (Femmina): <span id="femaleNameValue"></span></label>
             <select id="femaleName" name="femaleName">
-                <option value="default"></option>
-                <option value="Paperina">Paperina</option>
-                <option value="Minnie">Minnie</option>
+                <option value="Federica">Federica</option>
+                <option value="Isabella">Isabella</option>
+                <option value="Elisa">Elisa</option>
+                <option value="Camilla">Camilla</option>
+                <option value="Maddalena">Maddalena</option>
+                <option value="Anna">Anna</option>
+                <option value="Noemi">Noemi</option>
+                <option value="Sofia">Sofia</option>
+                <option value="Giulia">Giulia</option>
+                <option value="Sonia">Sonia</option>
             </select>
-
+            <!-- Input guesser -->
             <label for="guesserName">Hai concluso! Per finire, dicci chi sei :D</label>
             <input type="text" id="guesserName" name="guesserName" placeholder="Il tuo nome">
-
+            <!-- Submit button -->
             <button type="submit">Submit Guess</button>
         </form>
     </div>
 
-    <!-- Add this section below the form inside <div class="container"> -->
+    <!-- Results -->
     <div id="results">
-        <!-- <h2>Le vostre supposizioni</h2> -->
+        <h2> Le vostre previsioni </h2>
+        <!-- Table -->
         <table id="resultsTable">
             <thead>
                 <tr>
@@ -82,18 +103,21 @@
         </table>
     </div>
 
-    
-    <div id="scatterPlot" class="plot-container container"></div>
 
+    <!-- Word cloud -->
     <div class="word-clouds container">
         <div id="combinedNameCloud" class="word-cloud">
         </div>
     </div>
 
-    <div id="calendar-heatmap" class ="container calendar-heatmap"></div>
-
+    <!-- Calendar heatmap -->
+    <div id="calendar-heatmap" class ="calendar-heatmap">
+    </div>
     
-
+    <!-- Scatter plot -->
+    <div id="scatterPlot" class="plot-container container"></div>
+    
+    <!-- Definition of javascript -->
     <script src="script.js"></script>
 </body>
 </html>
